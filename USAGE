@@ -32,7 +32,7 @@
 	 'token' Number(-> INT)
 
 
-   Here is a script to process this specification (file `build') :
+   Here is a script to process this specification (file `build.sh') :
    
 
 	 GENTLE=../../gentle/gentle
