@@ -30,10 +30,11 @@
 *.su
 *.x86_64
 
-.idea/
 .tmp_versions/
 
 dkms.conf
 modules.order
 Module.symvers
 Mkfile.old
+
+!go.mod
