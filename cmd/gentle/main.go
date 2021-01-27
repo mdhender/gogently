@@ -20,16 +20,58 @@ package main
 
 import (
 	"fmt"
+	"github.com/mdhender/gogently/internal/lib"
 	"os"
-	"path/filepath"
 )
 
 func main() {
-	progname, err := os.Executable()
-	if err != nil {
-		fmt.Printf("%s: %+v\n", os.Args[0], err)
+	if len(os.Args) < 2 {
+		fmt.Printf("missing file name\n")
+		os.Exit(1)
 	}
-	progname = filepath.Base(progname)
-	fmt.Printf("todo: implement %q\n", progname)
-	os.Exit(2)
+	scanargs(os.Args[1:]...)
+	init_scanner()
+	init_idtab()
+	lib.ROOT()
+}
+
+var TraceFlag = false
+
+func TraceOption() bool {
+	return TraceFlag
+}
+
+var SymbolFileFlag = false
+
+func SymbolFileOption() bool {
+	return SymbolFileFlag
+}
+
+func scanargs(args ...string) {
+	source_defined := false
+	for _, arg := range args {
+		if arg == "-subdir" {
+			SetOption_SUBDIR()
+		} else if arg == "-alert" {
+			SetOption_ALERT()
+		} else if arg == "-if" {
+			SymbolFileFlag = true
+		} else if arg == "-trace" {
+			TraceFlag = true
+		} else {
+			if length := len(arg); length > 0 && arg[0] == '-' {
+				fmt.Printf("invalid option: %q\n", arg)
+				os.Exit(1)
+			} else if length <= 2 || arg[length-2] != '.' || arg[length-1] != 'g' {
+				fmt.Printf("invalid filename: %q\n", arg)
+				os.Exit(1)
+			}
+			DefSourceName(arg)
+			source_defined = true
+		}
+	}
+	if !source_defined {
+		fmt.Printf("missing file name\n")
+		os.Exit(1)
+	}
 }

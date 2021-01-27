@@ -60,6 +60,9 @@ func UndefMeaning(id *IDENTSTRUCT) {
 func id_to_string(id *IDENTSTRUCT) string {
 	return id.str
 }
+func (id *IDENTSTRUCT) String() string {
+	return id.str
+}
 
 func slice_to_id(b []byte) *IDENTSTRUCT {
 	if !initialized {
